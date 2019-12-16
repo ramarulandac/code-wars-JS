@@ -47,41 +47,46 @@ const romanNumberValidator = (romanNumbers) => {
 
     let romanArrayNumber = romanNumbers.split('') 
    
-    let valid;
-    let repeat = 0;
+    let valid; // expression valid?
+    let repeat = 0; // repeating counter
     let i = 0;
-    let token;
+    let token; 
     let tokenValue;
     let nextToken;
     let nextTokenValue;
 
     do {
+        // prior token ever
         valid = false;
         token = romanArrayNumber[i];
         tokenValue = romanDictionary[token]   
 
-        i++;
+        i++; // go ahead to next token
 
         nextToken = romanArrayNumber[i]
         nextTokenValue = romanDictionary[nextToken]      
         
+        // Repeating rule
         if (nextToken === token && (token ==='I' || token === 'X' || token === 'C' || token === 'M') && repeat < 4){
             valid = true;
-            repeat++
+            repeat++ // repeating token just one more
+        // Bigger values at right
         } else if (tokenValue > nextTokenValue && ((nextToken ==='I' || nextToken === 'X' || nextToken === 'C')||
                                                             (nextToken ==='V' || nextToken === 'L' || nextToken === 'D'))){
             valid = true;
+        // Fewer Values at right    
         } else if (tokenValue < nextTokenValue && ((nextToken ==='V' && token === 'I') ||(nextToken ==='X' && token === 'I') ||
                                                             (nextToken ==='L' && token === 'X') ||(nextToken ==='C' && token === 'X')||
                                                             (nextToken ==='M' && token === 'C') ||(nextToken ==='D' && token === 'C'))){
             valid = true;
-        }
-    
+        }    
 
-    } while(i < romanArrayNumber.length -1 && valid == true)
+     // Out of tokens or valid false? get the hell out of here
+     //otherwise stay    
+    } while(i < romanArrayNumber.length -1 && valid == true) 
   
     return valid
 }
 
-console.log(romanNumberValidator('MVX'))
+console.log(romanNumberValidator('MV'))
 console.log(romanNumberValidator('MMDCDLXIX'))
