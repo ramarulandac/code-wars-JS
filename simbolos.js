@@ -81,12 +81,6 @@ const RomanValidator = (romanNumbers) => {
     } while(i < romanArrayNumber.length -1 && valid == true)
   
     return valid
-
-}
-
-function numbersRomanArab(romanNumber){
-    
-
 }
 
 console.log(RomanValidator('MVX'))
