@@ -32,7 +32,7 @@ Sólo se contemplan números entre el 1 y el 3999
 
 
 
-const RomanValidator = (romanNumbers) => {
+const romanNumberValidator = (romanNumbers) => {
 
     let romanDictionary = {
 
@@ -83,5 +83,5 @@ const RomanValidator = (romanNumbers) => {
     return valid
 }
 
-console.log(RomanValidator('MVX'))
-console.log(RomanValidator('MMDCDLXIX'))
+console.log(romanNumberValidator('MVX'))
+console.log(romanNumberValidator('MMDCDLXIX'))
