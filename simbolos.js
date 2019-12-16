@@ -30,62 +30,64 @@ Sólo se contemplan números entre el 1 y el 3999
 * Crear una función para pasar de árabes a romanos
 * Hacer un validador de números romanos **********************/
 
-let romanN = {
 
-    'I':1,
-    'V':5,
-    'X':10,
-    'L':50,
-    'C':100,
-    'D':500,
-    'M':1000
-}
 
-const RomanValidator = (number) => {
-    
-    let numberArray = number.split('') 
+const RomanValidator = (romanNumbers) => {
+
+    let romanDictionary = {
+
+        'I':1,
+        'V':5,
+        'X':10,
+        'L':50,
+        'C':100,
+        'D':500,
+        'M':1000
+    }
+
+    let romanArrayNumber = romanNumbers.split('') 
    
-    let flag;
+    let valid;
     let repeat = 0;
     let i = 0;
+    let token;
+    let tokenValue;
+    let nextToken;
+    let nextTokenValue;
 
     do {
-       
-        flag = false;
-
-        let romanNumber = numberArray[i];
-        let romanNumberValue = romanN[romanNumber]   
+        valid = false;
+        token = romanArrayNumber[i];
+        tokenValue = romanDictionary[token]   
 
         i++;
 
-        romanNumber1 = numberArray[i]
-        romanNumberValue1 = romanN[romanNumber1]      
-
-        console.log()
+        nextToken = romanArrayNumber[i]
+        nextTokenValue = romanDictionary[nextToken]      
         
-        
-        if (romanNumber1 === romanNumber && (romanNumber ==='I' || romanNumber === 'X' || romanNumber === 'C' || romanNumber === 'M') && repeat < 4){
-            flag = true;
+        if (nextToken === token && (token ==='I' || token === 'X' || token === 'C' || token === 'M') && repeat < 4){
+            valid = true;
             repeat++
-        } else if (romanNumberValue > romanNumberValue1 && ((romanNumber1 ==='I' || romanNumber1 === 'X' || romanNumber1 === 'C') ||
-                                                            (romanNumber1 ==='V' || romanNumber1 === 'L' || romanNumber1 === 'D'))){
-            flag = true;
-        } else if (romanNumberValue < romanNumberValue1 && ((romanNumber1 ==='V' && romanNumber === 'I') ||(romanNumber1 ==='X' && romanNumber === 'I') ||
-                                                            (romanNumber1 ==='L' && romanNumber === 'X') ||(romanNumber1 ==='C' && romanNumber === 'X')||
-                                                            (romanNumber1 ==='M' && romanNumber === 'C') ||(romanNumber1 ==='D' && romanNumber === 'C'))){
-            flag = true;
+        } else if (tokenValue > nextTokenValue && ((nextToken ==='I' || nextToken === 'X' || nextToken === 'C')||
+                                                            (nextToken ==='V' || nextToken === 'L' || nextToken === 'D'))){
+            valid = true;
+        } else if (tokenValue < nextTokenValue && ((nextToken ==='V' && token === 'I') ||(nextToken ==='X' && token === 'I') ||
+                                                            (nextToken ==='L' && token === 'X') ||(nextToken ==='C' && token === 'X')||
+                                                            (nextToken ==='M' && token === 'C') ||(nextToken ==='D' && token === 'C'))){
+            valid = true;
         }
     
 
-    } while(i < numberArray.length -1 && flag == true)
+    } while(i < romanArrayNumber.length -1 && valid == true)
   
-    return flag
+    return valid
 
 }
 
-function numbersRomanArab(number){
+function numbersRomanArab(romanNumber){
     
 
 }
 
+console.log(RomanValidator('MVX'))
 console.log(RomanValidator('MMDCDLXIX'))
