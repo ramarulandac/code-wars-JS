@@ -48,7 +48,7 @@ const romanNumberValidator = romanNumber => {
 // Arab to roman number
 const arabToRomanNumber = number => {
 
-    if (typeof number != 'number' && number <= 0 || number >= 3999) throw Error(`${number} data type or integer value is between the range from 1 - 3999 `);
+    if (typeof number != 'number' || number <= 0 || number >= 3999) throw Error(`${number} data type or integer value is between the range from 1 - 3999 `);
 
     let base = [1000,100,10,1] // base to split decimal system numbers
     let Thousands = {0:'',1:'M',2:'MM',3:'MMM'}
@@ -66,4 +66,4 @@ const arabToRomanNumber = number => {
 
 }
 
-console.log(arabToRomanNumber(3004))
+console.log(arabToRomanNumber(-5004))
