@@ -1,18 +1,9 @@
 
 // Roman number validator
 
-const romanNumberValidator = (romanNumbers) => {
-
-    let romanDictionary = {
-        'I':1,
-        'V':5,
-        'X':10,
-        'L':50,
-        'C':100,
-        'D':500,
-        'M':1000
-    }
-
+const romanNumberValidator = (romanNumbers) => { 
+    
+    let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000 }
     let romanArrayNumber = romanNumbers.split('') 
    
     let valid; // expression valid?
@@ -24,9 +15,9 @@ const romanNumberValidator = (romanNumbers) => {
     let nextTokenValue;
 
     do {
-        // prior token ever
+       
         valid = false;
-        token = romanArrayNumber[i];
+        token = romanArrayNumber[i];  // prior token ever
         tokenValue = romanDictionary[token]   
 
         i++; // go ahead to next token
