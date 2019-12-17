@@ -1,10 +1,10 @@
 
 // Roman number validator
 
-const romanNumberValidator = (romanNumbers) => { 
+const romanNumberValidator = romanNumber => { 
     
     let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000 }
-    let romanArrayNumber = romanNumbers.split('') 
+    let romanArrayNumber = romanNumber.split('') 
    
     let valid; // expression valid?
     let repeat = 0; // repeating counter
@@ -46,7 +46,7 @@ const romanNumberValidator = (romanNumbers) => {
 }
 
 // Arab to roman number
-function arabToRomanNumber(number) {
+const arabToRomanNumber = number => {
 
     if (typeof number != 'number' && number <= 0 || number >= 3999) throw Error(`${number} data type or integer value is between the range from 1 - 3999 `);
 
