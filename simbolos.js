@@ -77,7 +77,7 @@ const arabToRomanNumber = number => {
 
 }
 
-// Arab to romanT to Arab number
+// roman to Arab number
 const romanToArabNumber = romanNumber => {
     
     let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000 }
@@ -106,6 +106,7 @@ const romanToArabNumber = romanNumber => {
 
                number += romanDictionary[nextToken] - tokenValue // having a correct next token bigger.. do the proper math
                i++
+               
             } else {            
                 number += tokenValue  // otherwise, just add          
             }
