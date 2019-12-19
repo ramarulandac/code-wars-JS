@@ -1,6 +1,4 @@
 
-// Roman number validator
-
 const romanNumberValidator = romanNumber => { 
     
     let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000 }
@@ -15,24 +13,25 @@ const romanNumberValidator = romanNumber => {
     let nextTokenValue;
 
     do {
-       
-        valid = false;
+        valid = false; // everything is false til the opposite is truth
         token = romanArrayNumber[i];  // prior token ever
         tokenValue = romanDictionary[token]   
+  
+        if(tokenValue && romanArrayNumber.length === 1) return true;// just 1 token? easy peasy
 
-        i++; // go ahead to next token
+        i++; // go ahead and catch the next token and its value
         nextToken = romanArrayNumber[i]
         nextTokenValue = romanDictionary[nextToken]      
         
         // Repeating rule
-        if (nextToken === token && (token ==='I' || token === 'X' || token === 'C' || token === 'M') && repeat < 4){
+        if (nextToken === token && (token ==='I' || token === 'X' || token === 'C' || token === 'M') && repeat < 2){
             valid = true;
-            repeat++ // repeating token just one more
-        // Bigger values at right
+            repeat++ // repeating token please one more
+        // Bigger values at right rule
         } else if (tokenValue > nextTokenValue && ((nextToken ==='I' || nextToken === 'X' || nextToken === 'C')||
                                                             (nextToken ==='V' || nextToken === 'L' || nextToken === 'D'))){
             valid = true;
-        // Fewer Values at right    
+        // Fewer Values at right rule   
         } else if (tokenValue < nextTokenValue && ((nextToken ==='V' && token === 'I') ||(nextToken ==='X' && token === 'I') ||
                                                    (nextToken ==='L' && token === 'X') ||(nextToken ==='C' && token === 'X')||
                                                    (nextToken ==='M' && token === 'C') ||(nextToken ==='D' && token === 'C'))){
@@ -40,7 +39,7 @@ const romanNumberValidator = romanNumber => {
         }    
 
      // Out of tokens or valid false? get the hell out of here, otherwise stay    
-    } while(i < romanArrayNumber.length -1 && valid == true) 
+    } while(i < romanArrayNumber.length-1 && valid == true) 
   
     return valid
 }
@@ -48,7 +47,7 @@ const romanNumberValidator = romanNumber => {
 // Arab to roman number
 const arabToRomanNumber = number => {
 
-    if (typeof number != 'number' || number <= 0 || number >= 3999) throw Error(`${number} data type or integer value is between the range from 1 - 3999 `);
+    if (typeof number != 'number' || number <= 0 || number > 3999) console.log(`${number} No valid data type or integer value isn't between 1 - 3999 `);
 
     let base = [1000,100,10,1] // base to split decimal system numbers
     let Thousands = {0:'',1:'M',2:'MM',3:'MMM'}
@@ -66,4 +65,40 @@ const arabToRomanNumber = number => {
 
 }
 
-console.log(arabToRomanNumber(-5004))
+const romanToArabNumber = romanNumber => {
+    
+    let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000 }
+    let romanArrayNumber = romanNumber.split('') 
+    let i = 0;
+    let token;
+    let tokenValue;
+    let number=0;
+
+    if (romanNumberValidator(romanNumber)){
+
+        do {
+            token = romanArrayNumber[i]
+            tokenValue = romanDictionary[token]
+            nextToken = romanArrayNumber[i+1]
+          
+            if(romanDictionary[nextToken] > tokenValue && ((token === 'I' && (nextToken === 'V' || nextToken === 'X'))||
+                                                           (token === 'X' && (nextToken === 'L' || nextToken === 'C'))||
+                                                           (token === 'C' && (nextToken === 'D' || nextToken === 'M')) )){
+
+               number += romanDictionary[nextToken] - tokenValue 
+               i++
+            } else {            
+                number += tokenValue            
+            }
+
+            i++
+            
+        } while(i < romanArrayNumber.length)
+
+        return number
+
+    } else {
+        console.log(`${romanNumber} It's not a valid Roman Number..`)
+        return console.log(`Try a valid one`)
+    }
+}
