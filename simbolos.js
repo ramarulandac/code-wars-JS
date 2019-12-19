@@ -55,7 +55,7 @@ const romanNumberValidator = romanNumber => {
   
     return valid
 }
-console.log(romanNumberValidator('E'));
+
 // Arab to roman number
 const arabToRomanNumber = number => {
 
@@ -121,3 +121,4 @@ const romanToArabNumber = romanNumber => {
         return console.log(`Try a valid one`)
     }
 }
+
