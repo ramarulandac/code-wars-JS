@@ -1,7 +1,8 @@
+"use strict";
 
 const romanNumberValidator = romanNumber => { 
     
-    let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000 }
+    let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
     let romanArrayNumber = romanNumber.split('') 
    
     let valid; // expression valid?
@@ -17,7 +18,9 @@ const romanNumberValidator = romanNumber => {
         token = romanArrayNumber[i];  // prior token ever
         tokenValue = romanDictionary[token]   
   
-        if(tokenValue && romanArrayNumber.length === 1) return true;// just 1 token? easy peasy
+        if(tokenValue && romanArrayNumber.length === 1) return true;
+                                                                     // just 1 token? easy peasy
+        if(!tokenValue && romanArrayNumber.length === 1) return false;
 
         i++; //Next token and its value
         nextToken = romanArrayNumber[i]
@@ -35,14 +38,14 @@ const romanNumberValidator = romanNumber => {
 
                 // Bigger values at right 
                 if (tokenValue > nextTokenValue && ((nextToken ==='I' || nextToken === 'X' || nextToken === 'C')||
-                                                                    (nextToken ==='V' || nextToken === 'L' || nextToken === 'D'))){
+                                                   (nextToken ==='V' || nextToken === 'L' || nextToken === 'D'))){
                    
                     valid = true;
 
                 // Fewer Values at left    
                 } else if (tokenValue < nextTokenValue && ((nextToken ==='V' && token === 'I') ||(nextToken ==='X' && token === 'I') ||
-                                                        (nextToken ==='L' && token === 'X') ||(nextToken ==='C' && token === 'X')||
-                                                        (nextToken ==='M' && token === 'C') ||(nextToken ==='D' && token === 'C'))){                                                
+                                                           (nextToken ==='L' && token === 'X') ||(nextToken ==='C' && token === 'X')||
+                                                           (nextToken ==='M' && token === 'C') ||(nextToken ==='D' && token === 'C'))){                                                
                     valid = true;
                 }            
         }    
@@ -52,7 +55,7 @@ const romanNumberValidator = romanNumber => {
   
     return valid
 }
-
+console.log(romanNumberValidator('E'));
 // Arab to roman number
 const arabToRomanNumber = number => {
 
@@ -74,6 +77,7 @@ const arabToRomanNumber = number => {
 
 }
 
+// Arab to romanT to Arab number
 const romanToArabNumber = romanNumber => {
     
     let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000 }
@@ -81,7 +85,9 @@ const romanToArabNumber = romanNumber => {
     let i = 0;
     let token;
     let tokenValue;
+    let nextToken;
     let number=0;
+    let lastToken = false;
 
     // is this thing a roman number?    
     if (romanNumberValidator(romanNumber)){
@@ -90,12 +96,13 @@ const romanToArabNumber = romanNumber => {
 
             // get the next two tokens even if the latter doesn't exist, who cares.. it's JS
             token = romanArrayNumber[i]
-            tokenValue = romanDictionary[token]
-            nextToken = romanArrayNumber[i+1]
+            tokenValue = romanDictionary[token];
+            
+            (romanArrayNumber.length-1 >= i+1)? nextToken = romanArrayNumber[i+1]:lastToken = true;
           
-            if(romanDictionary[nextToken] > tokenValue && ((token === 'I' && (nextToken === 'V' || nextToken === 'X'))||
+            if(!lastToken && romanDictionary[nextToken] > tokenValue && ((token === 'I' && (nextToken === 'V' || nextToken === 'X'))||
                                                            (token === 'X' && (nextToken === 'L' || nextToken === 'C'))||
-                                                           (token === 'C' && (nextToken === 'D' || nextToken === 'M')) )){
+                                                           (token === 'C' && (nextToken === 'D' || nextToken === 'M')))){
 
                number += romanDictionary[nextToken] - tokenValue // having a correct next token bigger.. do the proper math
                i++
