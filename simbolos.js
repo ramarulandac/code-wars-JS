@@ -31,7 +31,7 @@ const romanNumberValidator = romanNumber => {
         } else if (tokenValue > nextTokenValue && ((nextToken ==='I' || nextToken === 'X' || nextToken === 'C')||
                                                             (nextToken ==='V' || nextToken === 'L' || nextToken === 'D'))){
             valid = true;
-        // Fewer Values at right rule   
+        // Fewer Values at left rule   
         } else if (tokenValue < nextTokenValue && ((nextToken ==='V' && token === 'I') ||(nextToken ==='X' && token === 'I') ||
                                                    (nextToken ==='L' && token === 'X') ||(nextToken ==='C' && token === 'X')||
                                                    (nextToken ==='M' && token === 'C') ||(nextToken ==='D' && token === 'C'))){
@@ -43,6 +43,8 @@ const romanNumberValidator = romanNumber => {
   
     return valid
 }
+
+console.log(romanNumberValidator('CM'));
 
 // Arab to roman number
 const arabToRomanNumber = number => {
