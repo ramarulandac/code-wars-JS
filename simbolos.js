@@ -44,8 +44,6 @@ const romanNumberValidator = romanNumber => {
     return valid
 }
 
-console.log(romanNumberValidator('CM'));
-
 // Arab to roman number
 const arabToRomanNumber = number => {
 
