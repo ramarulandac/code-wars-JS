@@ -41,6 +41,3 @@ const fooBarQuix = (number) => {
 
     return response;
 }
-
-
-console.log(fooBarQuix(21))
