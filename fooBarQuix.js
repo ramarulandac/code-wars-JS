@@ -4,7 +4,8 @@ const fooBarQuix = (number) => {
      
     // character & number value errors
     if(!(typeof number === 'number' && number >= 0 && number <= 100)){
-     console.log(`Value ${number} isn't number data type or it's not value between 0 to 100..`)    
+     console.log(`Value ${number} isn't number data type or it's not value between 0 to 100..`)  
+      return   
     }
 
     let divisors = [3,5,7]
