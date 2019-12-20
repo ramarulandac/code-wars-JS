@@ -5,7 +5,7 @@ const romanNumberValidator = romanNumber => {
     let romanDictionary = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
     let romanArrayNumber = romanNumber.split('') 
    
-    let valid; // expression valid?
+    let valid; // expression validity
     let repeat = 0; // repeating counter
     let i = 0;
     let token; 
@@ -13,15 +13,16 @@ const romanNumberValidator = romanNumber => {
     let nextToken;
     let nextTokenValue;
 
+     // just 1 token? easy peasy
+    if(romanArrayNumber.length == 1 && romanDictionary[romanArrayNumber[0]]) 
+        return true  
+    else if (romanArrayNumber.length == 1) return false;
+    
     do {
         valid = false; // everything false til the opposite is truth
         token = romanArrayNumber[i];  // prior token ever
         tokenValue = romanDictionary[token]   
   
-        if(tokenValue && romanArrayNumber.length === 1) return true;
-                                                                     // just 1 token? easy peasy
-        if(!tokenValue && romanArrayNumber.length === 1) return false;
-
         i++; //Next token and its value
         nextToken = romanArrayNumber[i]
         nextTokenValue = romanDictionary[nextToken]      
@@ -34,7 +35,7 @@ const romanNumberValidator = romanNumber => {
 
         } else {  
 
-                repeat = 0; // restart
+                repeat = 0; // repeating counter restart
 
                 // Bigger values at right 
                 if (tokenValue > nextTokenValue && ((nextToken ==='I' || nextToken === 'X' || nextToken === 'C')||
