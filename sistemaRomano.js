@@ -130,5 +130,3 @@ const romanToArabNumber = romanNumber => {
         return console.log(`Try a valid one`)
     }
 }
-
-console.log(romanToArabNumber('VI'))
