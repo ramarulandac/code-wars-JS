@@ -101,12 +101,13 @@ const romanToArabNumber = romanNumber => {
         // just 1 token? easy peasy
         if(romanArrayNumber.length === 1) 
              return romanDictionary[romanArrayNumber[0]]
-
+        // otherwise
         do { 
             token = romanArrayNumber[i]
             tokenValue = romanDictionary[token];            
             nextToken = romanArrayNumber[i+1]
           
+            // bigger values at right?
             if(romanDictionary[nextToken] > tokenValue && ((token === 'I' && (nextToken === 'V' || nextToken === 'X'))||
                                                            (token === 'X' && (nextToken === 'L' || nextToken === 'C'))||
                                                            (token === 'C' && (nextToken === 'D' || nextToken === 'M')))){
