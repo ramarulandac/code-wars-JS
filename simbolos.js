@@ -17,7 +17,8 @@ const romanNumberValidator = romanNumber => {
     if(romanArrayNumber.length == 1 && romanDictionary[romanArrayNumber[0]]) 
         return true  
     else if (romanArrayNumber.length == 1) return false;
-    
+
+       
     do {
         valid = false; // everything false til the opposite is truth
         token = romanArrayNumber[i];  // prior token ever
@@ -57,18 +58,21 @@ const romanNumberValidator = romanNumber => {
     return valid
 }
 
+
 // Arab to roman number
 const arabToRomanNumber = number => {
 
     if (typeof number != 'number' || number <= 0 || number > 3999) console.log(`${number} No valid data type or integer value isn't between 1 - 3999 `);
 
-    let base = [1000,100,10,1] // base to split decimal system numbers
-    let Thousands = {0:'',1:'M',2:'MM',3:'MMM'}
-    let Hundreds = {0:'', 1:'C', 2:'CC', 3:'CCC', 4:'CD', 5:'D', 6:'DC', 7:'DCC', 8:'DCCC', 9:'CM' }
-    let Tens = {0:'', 1:'X',2:'XX',3:'XXX', 4:'XL', 5:'L', 6:'LX', 7:'LXX', 8:'LXXX', 9:'XC'}
-    let Units = {0:'', 1:'I', 2:'II', 3:'III', 4:'IV', 5:'V', 6:'VI', 7:'VII', 8:'VIII', 9:'IX'}
+    let base = [1000,100,10,1] // base to split decimal system numbers i.e.: number 2400 -> 2400/1000 -> 2,4 -> trunc(2.4) -> 2 -> Thousands[2] -> MM, 400 left
+                               //  --> 400 -> 400/100 -> 4 -> Hundreds[4] -> 'CD' ---> finally MMCD
+                               
+    let Thousands = {0:'',1:'M',2:'MM',3:'MMM'} // Dict of thousands
+    let Hundreds = {0:'', 1:'C', 2:'CC', 3:'CCC', 4:'CD', 5:'D', 6:'DC', 7:'DCC', 8:'DCCC', 9:'CM' } // Dict of Hundreds
+    let Tens = {0:'', 1:'X',2:'XX',3:'XXX', 4:'XL', 5:'L', 6:'LX', 7:'LXX', 8:'LXXX', 9:'XC'} // Dict of Tens
+    let Units = {0:'', 1:'I', 2:'II', 3:'III', 4:'IV', 5:'V', 6:'VI', 7:'VII', 8:'VIII', 9:'IX'} //Dict of Units
 
-    let romanNumberArrayIndex = [] //Index to build the roman number searching on the dicts.
+    let romanNumberArrayIndex = [] //Index Array to build the roman number searching on the dicts.
     let numberAux = number    
     
     base.forEach(x => { romanNumberArrayIndex.push(Math.trunc(numberAux/x)); // Splitting  decimal system numbers   
@@ -77,6 +81,7 @@ const arabToRomanNumber = number => {
     return Thousands[romanNumberArrayIndex[0]] + Hundreds[romanNumberArrayIndex[1]] + Tens[romanNumberArrayIndex[2]] + Units[romanNumberArrayIndex[3]]
 
 }
+
 
 // roman to Arab number
 const romanToArabNumber = romanNumber => {
@@ -93,20 +98,22 @@ const romanToArabNumber = romanNumber => {
     // is this thing a roman number?    
     if (romanNumberValidator(romanNumber)){
 
+        // just 1 token? easy peasy
+        if(romanArrayNumber.length === 1) 
+             return romanDictionary[romanArrayNumber[0]]
+
         do { //seems like it is
 
-            // get the next two tokens even if the latter doesn't exist, who cares.. it's JS
             token = romanArrayNumber[i]
-            tokenValue = romanDictionary[token];
-            
-            (romanArrayNumber.length-1 >= i+1)? nextToken = romanArrayNumber[i+1]:lastToken = true;
+            tokenValue = romanDictionary[token];            
+            nextToken = romanArrayNumber[i+1]
           
-            if(!lastToken && romanDictionary[nextToken] > tokenValue && ((token === 'I' && (nextToken === 'V' || nextToken === 'X'))||
+            if(romanDictionary[nextToken] > tokenValue && ((token === 'I' && (nextToken === 'V' || nextToken === 'X'))||
                                                            (token === 'X' && (nextToken === 'L' || nextToken === 'C'))||
                                                            (token === 'C' && (nextToken === 'D' || nextToken === 'M')))){
 
                number += romanDictionary[nextToken] - tokenValue // having a correct next token bigger.. do the proper math
-               i++
+               i++                                               // and increase iteration i
                
             } else {            
                 number += tokenValue  // otherwise, just add          
@@ -124,3 +131,4 @@ const romanToArabNumber = romanNumber => {
     }
 }
 
+console.log(romanToArabNumber('VI'))
