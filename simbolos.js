@@ -97,9 +97,7 @@ const romanToArabNumber = romanNumber => {
 
     // is this thing a roman number?    
     if (romanNumberValidator(romanNumber)){
-
-        //seems like it is
-
+                                            //seems like it is
         // just 1 token? easy peasy
         if(romanArrayNumber.length === 1) 
              return romanDictionary[romanArrayNumber[0]]
