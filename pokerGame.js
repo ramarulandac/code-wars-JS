@@ -66,53 +66,54 @@ class Plays {
             this.handCards = handCards
         }
         
-        getPairs2o3() {             // Get the type of play: pair, double pair, three, full house
+        getPairs2o3() {             // Get the type of play: pair, double pair, three, poker, full house
 
-            let pairs2o3Aux = {}   // collect posible pairs & Three kind
-            let pairs2o3Temp = {}                           
-            let pairs2o3 = {}                                 // collect the real ones pairs and Three kinds
+            let pairsAux = {}   // collect posible pairs & Three kind
+            let pairsTemp = {}                           
+            let pairs = {}                                 // collect the real ones pairs and Three kinds
 
             this.handCards.forEach(card => {
 
                 let valueSuiteArray = card.split('') 
                 let cardValue = valueSuiteArray[0]; 
                
-                pairs2o3Aux.hasOwnProperty(cardValue)? pairs2o3Aux[cardValue]++ : pairs2o3Aux[cardValue] = 1  // Having that card value ++1, otherwise.. creates the entry           
+                pairsAux.hasOwnProperty(cardValue)? pairsAux[cardValue]++ : pairsAux[cardValue] = 1  // Having that card value ++1, otherwise.. creates the entry           
             });
 
             // Creates the type of pair, double pair, three, poker, full house, 
 
-            for(let key in pairs2o3Aux){
+            for(let key in pairsAux){
 
-                if(pairs2o3Aux[key] == 2) {                                      //it's pair?
+                if(pairsAux[key] == 2) {                                      //it's pair?
 
-                    if(pairs2o3Temp['pair']) {                                   // Yes, is there been pair before?
+                    if(pairsTemp['pair']) {                                   // Yes, is there been pair before?
 
-                        if (pairs2o3Temp['pair'] < Value[key])                   //yup, which one is bigger?
+                        if (pairsTemp['pair'] < Value[key])                   //yup, which one is bigger?
 
-                            pairs2o3Temp = {'double pair' : key}                 // this one, then double pair - current key
+                            pairsTemp = {'double pair' : key}                 // this one, then double pair - current key
 
                         else
 
-                            pairs2o3Temp = {'double pair': pairs2o3Temp['pair']}  // the past one, then double pair - the prior key
+                            pairsTemp = {'double pair': pairsTemp['pair']}  // the past one, then double pair - the prior key
 
                     } else {                                                      //  nope,
 
-                        pairs2o3Temp['pair'] = key                                //  .. then first pair
+                        pairsTemp['pair'] = key                                //  .. then first pair
 
                     }                    
 
-                } else if(pairs2o3Aux[key] == 3) {          // three
+                } else if(pairsAux[key] == 3) {          // three
 
-                    pairs2o3Temp['three'] = key
+                    if (pairsTemp['pair']) pairsTemp = {'full house' : key};
+                    else pairsTemp['three'] = key
 
-                } else if(pairs2o3Aux[key] == 4){          // poker
+                } else if(pairsAux[key] == 4){          // poker
 
-                    pairs2o3Temp['poker'] = key
+                    pairsTemp['poker'] = key
                 }
             }  
 
-            return pairs2o3Temp        
+            return pairsTemp        
         }
 
         
@@ -183,7 +184,7 @@ class Plays {
 }
 
 
-let plays = new Plays(['2H','4S','4C','4D','4H'])
+let plays = new Plays(['2H','4S','4C','4D','2H'])
 let plays1 = new Plays(['2C','3H','4H','5H','6H'])
 
 
