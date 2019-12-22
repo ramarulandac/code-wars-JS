@@ -1,27 +1,5 @@
 'use strict'
 
-/**
- 
-* High Card (Carta Más Alta): Para manos que no entran en ninguna de las manos superior, el ganador es aquel que tiene la carta más alta. Si se produce un empate entonces se compara la siguiente carta más alta y así sucesivamente. 
-
-* Pair (Parejas): 2 de las 5 cartas de la mano tienen el mismo valor. Si las dos manos tienen pareja, entonces gana la que tenga la pareja más alta. Si ambas parejas son iguales entonces gana el que tenga la carta más alta. 
-
-* Two Pairs (Dobles Parejas): La mano contiene 2 parejas diferentes. Si las dos manos tienen dobles parejas diferentes entonces gana aquella que tenga la pareja más alta. Si las dos manos tienen las mismas parejas entonces se compara la otra pareja. Si ambas manos tiene las mismas parejas entonces gana el que tenga la carta más alta restante. 
-
-* Three of a Kind (Trio): 3 cartas de la mano tienen el mismo valor. Gana la mano que tiene las 3 cartas con mayor valor. 
-
-* Straight (Escalera): La mano contiene 5 cartas consecutivas. Si las dos manos tienen escalera entonces gana la que tiene la carta más alta. 
-
-* Flush (Color): La mano tiene 5 cartas con la misma cara. Si ambas manos tienen escalera entonces gana el que tenga la carta más alta. 
-
-* Full House (Full): La mano tiene un trío y una pareja. En caso de tener ambas manos full entonces gana el que tenga el trío más alto. 
-
-* Four of a Kind (Poker): 4 cartas con el mismo valor. En caso de tener ambas manos poker gana el que tenga el valor más alto.
-
-* Straight flush (Escalera de Color): 5 cartas de la misma cara pero con valores consecutivos. En caso de tener escalera las dos manos entonces gana el que tenga el valor más alto.
- * 
- */
-
 let Suit = {'S':'spades','H':'hearts','C':'clubs','D':'diamonds'}
 
 // '':0  - 'Z':20 added to simplify Straight Play search by the expression (Heighest - lowest === 5)
@@ -29,26 +7,130 @@ let Value = {'':0,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'
 
 
 let Results = {
-   /* 'Straight flush':
-    'Four of a Kind':
-    'Full House':
-    'Flush':
-    'Straight':
-    'Three of a Kind':
-    'Two Pairs':
-    'Pair':
-    'High Card':*/
+    
+    'straightFlush': 20,
+    'poker': 15,
+    'fullhouse': 12,
+    'flush': 10,
+    'straight': 8,
+    'three': 6,
+    'double-pair': 4,
+    'pair': 2,
+    'highestcard': 1
 }
 
-
-
-
-class PokerGame {
+class PokerGameApp {
     
-    constructor() {
-
+    constructor(plays) {
+        this.plays = plays;       
     }
 
+    evaluateGame(){
+       
+        let bet;
+        let betAux = 0;
+        let betI;
+        let betValue = 0;
+        let betIAux = -1;
+        let playAux;
+        let win = 0;
+        
+
+        for(let i = 0; i < this.plays.length; i++) { 
+
+            playAux =  this.plays[i]
+            
+            for (let key in playAux){
+               
+                    if(key === 'straightFlush' && playAux[key]){
+                                           
+                        bet = Results['straightFlush'];
+                        betValue = playAux['value']
+                        betI = i;
+                        
+                    } if(key === 'poker'){
+
+                        bet = Results['poker'];
+                        betValue = playAux['value']
+                        betI = i;
+
+                    } if(key === 'fullhouse'){
+                        
+                        bet = Results['fullhouse'];
+                        betValue = playAux['value']
+                        betI = i;
+
+                    } if (key === 'flush' && playAux[key]){
+                    
+                        bet = Results['flush'];
+                        betValue = playAux['value']
+                        betI = i;
+                        break;
+
+                    } if (key === 'straight' && playAux[key]) {
+
+                        bet = Results['straight'];
+                        betValue = playAux['value']
+                        betI = i;
+                        break;
+
+                    } if (key === 'three') {
+
+                        bet = Results['three'];
+                        betValue = playAux['value']
+                        betI = i;
+
+                    } if (key === 'double-pair') {
+
+                        bet = Results['double-pair'];
+                        betValue = playAux['value']
+                        betI = i;
+
+                    } if(key === 'pair') {
+
+                        bet = Results['pair'];
+                        betValue = playAux['value']
+                        betI = i;
+
+                    } if (key === 'highestcard') {
+
+                        bet = Results['highestcard'];
+                        betValue = playAux['value']
+                        betI = i;
+                    }
+
+                    break;                   
+                }
+
+              if(betAux < bet) {
+
+                betIAux = betI
+                betAux  = bet
+                win = 1                
+
+              } else if (betAux === bet) {                 
+                
+                win = 0
+                
+              } if (this.plays[0].value > this.plays[1].value){
+                  
+                betIAux = 0;
+                win = 1
+
+              } else if (this.plays[0].value < this.plays[1].value){
+
+                betIAux = 1
+                win = 1
+              }
+        }      
+           
+          if(win === 1) return { 'player':'winner player ' + (parseInt(betIAux) + 1) , 'handCards':this.plays[betIAux]}
+          else return {'deuce': 'deuce'}
+    }    
+
+    playGame(){   //
+       return this.plays;
+    }
 }
 
 class Player {
@@ -109,7 +191,7 @@ class Plays {
         getPairs() {             // Get the type of pair: pair simple, double pair, three, poker, full house
 
             let pairsAux = {}   // collect posible types of pairs
-            let pairs = {}      // type of pair                      
+            let pairs = {};      // type of pair                      
             
 
             this.handCards.forEach(card => { //Classifies all cards by number
@@ -128,31 +210,30 @@ class Plays {
 
                         if (pairs['pair'] < Value[key])                 //yup, which one is bigger?
 
-                            pairs = {'double-pair' : key}               // this one, then double pair - current key
+                            pairs = {'double-pair':true,'value': key}               // this one, then double pair - current key
 
                         else
 
-                            pairs = {'double-pair': pairs['pair']}      // the past one is bigger, then double pair - the prior key
+                            pairs = {'double-pair':true, 'value':pairs['pair']}      // the past one is bigger, then double pair - the prior key
 
                     } else {                                            //  nope, there isn't
 
-                        pairs['pair'] = key                             //  .. then first pair
+                        pairs = {'pair':true,'value':key }                            //  .. then first pair
                     }                    
 
                 } else if(pairsAux[key] == 3) {          // three
 
-                    if (pairs['pair']) pairs = {'fullhouse' : key}; // full house
-                    else pairs['three'] = key
+                    if (pairs['pair']) pairs = {'fullhouse':true, 'value':key }; // full house
+                    else pairs = {'three':true, 'value':key } 
 
                 } else if(pairsAux[key] == 4){          // poker
 
-                    pairs['poker'] = key
+                    pairs = {'poker':true, 'value':key}
                 }
             }  
 
             return pairs        
         }
-
         
         getHighestCard(As) {                                    // Check for the highest value - if As param 'A', check if As might be 1 in Straight play                 
 
@@ -223,22 +304,28 @@ class Plays {
 
             return {'straightFlush':isFlush.flush && isStraight.straight, 'value':isStraight.value}
         }
-
-
 }
 
 
-let plays = new Plays(['2H','4S','4C','4D','2H'])
-let plays1 = new Plays(['2H','3H','4H','5H','6H'])
+function  main(){
+
+    let player1 = new Player('carlos',['2H','4S','4C','4D','2H'])
+    let player2 = new Player('luis',['2H','3H','4H','5H','6H'])
+    /*let player1 = new Player('carlos',['2H','3H','4H','5H','6H'])*/
+    
+    let plays = [player1.postPlay(),player2.postPlay()];
+    
+    let game = new PokerGameApp(plays)
+    
+    let  result = game.evaluateGame();
 
 
-console.log(plays1.getHighestCard())
-console.log(plays1.getHighestCard('A'))
-console.log(plays1.isStraight())
-console.log(plays1.isFlush())
-console.log(plays1.isStraightFlush())
-console.log(plays.getPairs())
+    if(result.player){
+        console.log(`${result.player}`)
+        console.log(result.handCards) 
+    } 
+    else console.log(result.deuce)
+}
 
-let player = new Player('Carlos',['4H','4S','4C','4D','2H'])
 
-console.log(player.postPlay())
+main()
