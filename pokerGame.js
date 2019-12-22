@@ -68,8 +68,8 @@ class Plays {
         
         getPairs() {             // Get the type of pair: pair simple, double pair, three, poker, full house
 
-            let pairsAux = {}   // collect posible pairs & Three kind
-            let pairs = {}                           
+            let pairsAux = {}   // collect posible types of pairs
+            let pairs = {}      // type of pair                      
             
 
             this.handCards.forEach(card => { //Classifies all cards by number
@@ -77,12 +77,12 @@ class Plays {
                 let valueSuiteArray = card.split('') 
                 let cardValue = valueSuiteArray[0]; 
                
-                pairsAux.hasOwnProperty(cardValue)? pairsAux[cardValue]++ : pairsAux[cardValue] = 1  // Having that card value then ++1, otherwise.. creates the entry           
+                pairsAux.hasOwnProperty(cardValue)? pairsAux[cardValue]++ : pairsAux[cardValue] = 1  // Having that card value, then ++1, otherwise.. creates the entry           
             });        
 
             for(let key in pairsAux){      // Creates the type of pair: pair simple, double pair, three, poker, full house based on pairs Classification
 
-                if(pairsAux[key] == 2) {                                    //it's pair?
+                if(pairsAux[key] == 2) {                                //it's pair?
 
                     if(pairs['pair']) {                                 // Yes it is pair. is there been pair before?
 
@@ -123,7 +123,7 @@ class Plays {
                 let valueSuiteArray = card.split('')
                 let cardValue = valueSuiteArray[0];
 
-               if(As === 'A' && cardValue === As) cardValue = '1'; // check if the highest might be a 5 card for a traight play
+               if(As === 'A' && cardValue === As) cardValue = '1'; // check if the highest might be a 5 card for a Straight play
                 
                if(Value[highestCard] < Value[cardValue]) highestCard = cardValue;
             })
@@ -152,16 +152,17 @@ class Plays {
             let highestCard = this.getHighestCard()
             let lowestCard =  this.getLowestCard()
 
-            if(Value[highestCard] - Value[lowestCard] === 4) return {'straight':true,'value':highestCard} ;                                // normal Straight play                
+            if(Value[highestCard] - Value[lowestCard] === 4) return {'straight':true,'value':highestCard} ; // normal Straight play
 
-            else if(Value[highestCard] === MAX && Value[this.getHighestCard('A')] === 5 )   return {'straight':true,'value':highestCard} ; // Straight play - As first Card
+              // Straight play contains Ace as first Card
+            else if(Value[highestCard] === MAX && Value[this.getHighestCard('A')] === 5 )   return {'straight':true,'value':highestCard} ; 
 
             return  {'straight':false,'value':null};
         }
 
         isFlush() {
 
-            let suits = {}
+            let suits = {} // collect types of suits
 
             this.handCards.forEach(card => {   
 
@@ -171,7 +172,7 @@ class Plays {
                 suits.hasOwnProperty(valueSuiteArray[1])?suits[valueSuiteArray[1]]++ : suits[valueSuiteArray[1]]=1;
             })
 
-            if (Object.keys(suits).length === 1) return {'flush':true, 'value':this.getHighestCard()}
+            if (Object.keys(suits).length === 1) return {'flush':true, 'value':this.getHighestCard()} // tell me, whether there's just one or not.
             else return {'flush':false, 'value':null}
         }
 
