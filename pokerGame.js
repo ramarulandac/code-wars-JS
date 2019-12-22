@@ -61,7 +61,6 @@ class Player {
 
 
 class Plays {
-
         
         constructor(handCards){
             this.handCards = handCards
@@ -76,8 +75,8 @@ class Plays {
 
                 let valueSuiteArray = card.split('') 
                 let cardValue = valueSuiteArray[0]; 
-                // Having that card value ++1, otherwise.. creates the entry
-                pairs2o3Aux.hasOwnProperty(cardValue)? pairs2o3Aux[cardValue]++ : pairs2o3Aux[cardValue] = 1            
+               
+                pairs2o3Aux.hasOwnProperty(cardValue)? pairs2o3Aux[cardValue]++ : pairs2o3Aux[cardValue] = 1  // Having that card value ++1, otherwise.. creates the entry           
             });
 
             // return just values above 1
@@ -88,8 +87,8 @@ class Plays {
             return pairs2o3        
         }
 
-        // Check for the highest value - if As param 'A', check if As might be 1 in Straight play
-        getHighestCard(As) {                                    //  As param to check whether the handCards has a Straight play beginning at 1
+        
+        getHighestCard(As) {                                     // Check for the highest value - if As param 'A', check if As might be 1 in Straight play                 
 
             let highestCard = ''                                 // '' Lowest value on Values dict
 
