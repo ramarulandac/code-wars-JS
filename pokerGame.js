@@ -311,12 +311,10 @@ function  main(){
 
     let player1 = new Player('carlos',['2H','4S','4C','4D','2H'])
     let player2 = new Player('luis',['2H','3H','4H','5H','6H'])
-    /*let player1 = new Player('carlos',['2H','3H','4H','5H','6H'])*/
-    
+        
     let plays = [player1.postPlay(),player2.postPlay()];
     
     let game = new PokerGameApp(plays)
-    
     let  result = game.evaluateGame();
 
 
