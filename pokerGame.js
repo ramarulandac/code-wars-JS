@@ -191,10 +191,3 @@ class Plays {
 let plays = new Plays(['2H','4S','4C','4D','2H'])
 let plays1 = new Plays(['2H','3H','4H','5H','6H'])
 
-
-console.log(plays1.getHighestCard())
-console.log(plays1.getHighestCard('A'))
-console.log(plays1.isStraight())
-console.log(plays1.isFlush())
-console.log(plays1.isStraightFlush())
-console.log(plays.getPairs())
