@@ -53,9 +53,49 @@ class PokerGame {
 
 class Player {
 
-    constructor(name, mano) {
+    constructor(name, handCards) {
         this.name = name
         this.handCards = handCards
+    }
+
+    getHandCards(){
+        return this.handCards
+    }
+
+    getName(){
+        return this.name
+    }
+
+    postPlay(){
+
+        let plays = new Plays(this.handCards)
+
+        let bet = plays.isStraightFlush()
+        if(bet.straightFlush) return bet;
+
+        let betPair = plays.getPairs()
+        if(betPair.poker) return betPair;
+
+        betPair = plays.getPairs()
+        if(betPair.fullhouse) return betPair;
+
+        bet = plays.isFlush()
+        if(bet.flush) return bet;
+
+        bet = plays.isStraight()
+        if(bet.straight) return bet;  
+        
+        betPair = plays.getPairs()
+        if(betPair.three) return betPair;
+
+        betPair = plays.getPairs()
+        if(betPair.double-pair) return betPair;
+
+        betPair = plays.getPairs()
+        if(betPair.pair) return betPair;
+
+        bet = plays.highestCard()
+        if(bet) return {'highestcard':bet}; 
     }
 }
 
@@ -88,11 +128,11 @@ class Plays {
 
                         if (pairs['pair'] < Value[key])                 //yup, which one is bigger?
 
-                            pairs = {'double pair' : key}               // this one, then double pair - current key
+                            pairs = {'double-pair' : key}               // this one, then double pair - current key
 
                         else
 
-                            pairs = {'double pair': pairs['pair']}      // the past one is bigger, then double pair - the prior key
+                            pairs = {'double-pair': pairs['pair']}      // the past one is bigger, then double pair - the prior key
 
                     } else {                                            //  nope, there isn't
 
@@ -101,7 +141,7 @@ class Plays {
 
                 } else if(pairsAux[key] == 3) {          // three
 
-                    if (pairs['pair']) pairs = {'full house' : key}; // full house
+                    if (pairs['pair']) pairs = {'fullhouse' : key}; // full house
                     else pairs['three'] = key
 
                 } else if(pairsAux[key] == 4){          // poker
@@ -191,3 +231,14 @@ class Plays {
 let plays = new Plays(['2H','4S','4C','4D','2H'])
 let plays1 = new Plays(['2H','3H','4H','5H','6H'])
 
+
+console.log(plays1.getHighestCard())
+console.log(plays1.getHighestCard('A'))
+console.log(plays1.isStraight())
+console.log(plays1.isFlush())
+console.log(plays1.isStraightFlush())
+console.log(plays.getPairs())
+
+let player = new Player('Carlos',['4H','4S','4C','4D','2H'])
+
+console.log(player.postPlay())
