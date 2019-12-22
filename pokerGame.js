@@ -21,8 +21,12 @@
 * Straight flush (Escalera de Color): 5 cartas de la misma cara pero con valores consecutivos. En caso de tener escalera las dos manos entonces gana el que tenga el valor más alto.
  * 
  */
+
 let Suit = {'S':'spades','H':'hearts','C':'clubs','D':'diamonds'}
-let Value = {'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'J':11,'Q':12,'K':13,'A':14}
+
+// '':0  - 'Z':20 added to simplify Straight Play search by the expression (Heighest - lowest === 5)
+let Value = {'':0,'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'J':11,'Q':12,'K':13,'A':14,'Z':20}
+
 
 let Results = {
    /* 'Straight flush':
@@ -39,87 +43,111 @@ let Results = {
 
 
 
-class pokerGame {
+class PokerGame {
     
     constructor() {
 
-    }   
-
-   
-
-
+    }
 
 }
 
-class player {
+class Player {
 
     constructor(name, mano) {
         this.name = name
         this.handCards = handCards
     }
-    
-
-
-
-
 }
 
 
 class Plays {
-    
-    constructor(handCards){
-        this.handCards = handCards
-    }
-    
-    getPairsThreeOfKind() {
 
-        let pairsThreeOfKindAux = {}
-        let pairsThreeOfKind = {}
+        
+        constructor(handCards){
+            this.handCards = handCards
+        }
+        
+        getPairs2o3() {
 
-        this.handCards.forEach(card => {
+            let pairs2o3Aux = {}                              // collect posible pairs & Three kind
+            let pairs2o3 = {}                                 // collect the real ones pairs and Three kinds
 
-            let valueSuiteArray = card.split('') 
-            let cardValue = valueSuiteArray[0]; 
-             console.log(cardValue)
-            pairsThreeOfKind.hasOwnProperty(cardValue)? pairsThreeOfKind[cardValue]++:pairsThreeOfKind[cardValue] = 1            
+            this.handCards.forEach(card => {
 
-        });
+                let valueSuiteArray = card.split('') 
+                let cardValue = valueSuiteArray[0]; 
+                // Having that card value ++1, otherwise.. creates the entry
+                pairs2o3Aux.hasOwnProperty(cardValue)? pairs2o3Aux[cardValue]++ : pairs2o3Aux[cardValue] = 1            
+            });
+
+            // return just values above 1
+            for(let key in pairs2o3Aux){
+                if(pairs2o3Aux[key]>1) pairs2o3[key] = pairs2o3Aux[key];
+            }        
+
+            return pairs2o3        
+        }
+
+        // Check for the highest value - if As param 'A', check if As might be 1 in Straight play
+        getHighestCard(As) {                                    //  As param to check whether the handCards has a Straight play beginning at 1
+
+            let highestCard = ''                                 // '' Lowest value on Values dict
+
+            this.handCards.forEach(card => {   
+
+                let valueSuiteArray = card.split('')
+                let cardValue = valueSuiteArray[0];
+
+               if(As === 'A' && cardValue === As) cardValue = '1'; // check if the highest might be a 5 card for a traight play
+                
+               if(Value[highestCard] < Value[cardValue]) highestCard = cardValue;
+            })
+
+            return highestCard;
+        }
+
+        getLowestCard(){
+
+            let lowestCard = 'Z'                                   // 'Z' Highest value on Values dict
+            this.handCards.forEach(card => {   
+
+                let valueSuiteArray = card.split('')
+                let cardValue = valueSuiteArray[0]; 
+
+                if (Value[lowestCard] > Value[cardValue]) lowestCard = cardValue;            
+            })
+
+            return lowestCard
+        }
+
+        getStraight() {
+
+            const MAX = 14
+
+            let highestCard = this.getHighestCard()
+            let lowestCard =  this.getLowestCard()
+
+            if(Value[highestCard] - Value[lowestCard] === 5) return true;                                // normal Straight play                
+
+            else if(Value[highestCard] === MAX && Value[this.getHighestCard('A')] === 5 )   return true; // Straight play - As first Card
+
+            return false;
+        }
 
 
-        for(let key in pairsThreeOfKind){
-            if(pairsThreeOfKind[key]>1) pairsThreeOfKindAux[key] = pairsThreeOfKind[key];
-        }        
 
-        return pairsThreeOfKindAux        
-    }
-  
-    getHighestCard() {
 
-        let highestCard = ''
-
-        this.handCards.forEach(card => {   
-
-            let valueSuiteArray = card.split('')
-            let cardValue = valueSuiteArray[0]; 
-
-            (highestCard < Value[cardValue])? highestCard = cardValue: null;
-        })
-
-        return highestCard;
-    }
+        getResult() {
 
 
 
-    getResult() {
-
-
-
-    }
+        }
 }
 
 
 let plays = new Plays(['2H','4S','4C','2D','4H'])
+let plays1 = new Plays(['KH','2H','3H','4H','5H'])
 
-
-console.log(plays.getPairsThreeOfKind())
-console.log(plays.getHighestCard())
+console.log(plays1.getHighestCard())
+console.log(plays1.getHighestCard('A'))
+console.log(plays1.getStraight())
