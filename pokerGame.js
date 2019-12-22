@@ -66,7 +66,7 @@ class Plays {
             this.handCards = handCards
         }
         
-        getPairs2o3() {             // Get the type of play: pair, double pair, three, poker, full house
+        getPairs() {             // Get the type of play: pair, double pair, three, poker, full house
 
             let pairsAux = {}   // collect posible pairs & Three kind
             let pairsTemp = {}                           
@@ -80,31 +80,30 @@ class Plays {
                 pairsAux.hasOwnProperty(cardValue)? pairsAux[cardValue]++ : pairsAux[cardValue] = 1  // Having that card value ++1, otherwise.. creates the entry           
             });
 
-            // Creates the type of pair, double pair, three, poker, full house, 
+        
 
-            for(let key in pairsAux){
+            for(let key in pairsAux){                                       // Creates the type of pair, double pair, three, poker, full house, 
 
-                if(pairsAux[key] == 2) {                                      //it's pair?
+                if(pairsAux[key] == 2) {                                    //it's pair?
 
-                    if(pairsTemp['pair']) {                                   // Yes, is there been pair before?
+                    if(pairsTemp['pair']) {                                 // Yes, is there been pair before?
 
-                        if (pairsTemp['pair'] < Value[key])                   //yup, which one is bigger?
+                        if (pairsTemp['pair'] < Value[key])                 //yup, which one is bigger?
 
-                            pairsTemp = {'double pair' : key}                 // this one, then double pair - current key
+                            pairsTemp = {'double pair' : key}               // this one, then double pair - current key
 
                         else
 
                             pairsTemp = {'double pair': pairsTemp['pair']}  // the past one, then double pair - the prior key
 
-                    } else {                                                      //  nope,
+                    } else {                                                //  nope,
 
-                        pairsTemp['pair'] = key                                //  .. then first pair
-
+                        pairsTemp['pair'] = key                             //  .. then first pair
                     }                    
 
                 } else if(pairsAux[key] == 3) {          // three
 
-                    if (pairsTemp['pair']) pairsTemp = {'full house' : key};
+                    if (pairsTemp['pair']) pairsTemp = {'full house' : key}; // full house
                     else pairsTemp['three'] = key
 
                 } else if(pairsAux[key] == 4){          // poker
@@ -178,18 +177,25 @@ class Plays {
             else return {'flush':false, 'value':null}
         }
 
+        isStraightFlush() {
 
-        getResult() {
+            let isFlush = this.isFlush()
+            let isStraight = this.isStraight()
+
+            return {'straightFlush':isFlush.flush && isStraight.straight, 'value':isStraight.value}
         }
+
+
 }
 
 
 let plays = new Plays(['2H','4S','4C','4D','2H'])
-let plays1 = new Plays(['2C','3H','4H','5H','6H'])
+let plays1 = new Plays(['2H','3H','4H','5H','6H'])
 
 
 console.log(plays1.getHighestCard())
 console.log(plays1.getHighestCard('A'))
 console.log(plays1.isStraight())
 console.log(plays1.isFlush())
-console.log(plays.getPairs2o3())
+console.log(plays1.isStraightFlush())
+console.log(plays.getPairs())
