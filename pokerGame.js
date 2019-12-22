@@ -66,9 +66,10 @@ class Plays {
             this.handCards = handCards
         }
         
-        getPairs2o3() {
+        getPairs2o3() {             // Get the type of play: pair, double pair, three, full house
 
-            let pairs2o3Aux = {}                              // collect posible pairs & Three kind
+            let pairs2o3Aux = {}   // collect posible pairs & Three kind
+            let pairs2o3Temp = {}                           
             let pairs2o3 = {}                                 // collect the real ones pairs and Three kinds
 
             this.handCards.forEach(card => {
@@ -79,16 +80,43 @@ class Plays {
                 pairs2o3Aux.hasOwnProperty(cardValue)? pairs2o3Aux[cardValue]++ : pairs2o3Aux[cardValue] = 1  // Having that card value ++1, otherwise.. creates the entry           
             });
 
-            // return just values above 1
-            for(let key in pairs2o3Aux){
-                if(pairs2o3Aux[key]>1) pairs2o3[key] = pairs2o3Aux[key];
-            }        
+            // Creates the type of pair, double pair, three, poker, full house, 
 
-            return pairs2o3        
+            for(let key in pairs2o3Aux){
+
+                if(pairs2o3Aux[key] == 2) {                                      //it's pair?
+
+                    if(pairs2o3Temp['pair']) {                                   // Yes, is there been pair before?
+
+                        if (pairs2o3Temp['pair'] < Value[key])                   //yup, which one is bigger?
+
+                            pairs2o3Temp = {'double pair' : key}                 // this one, then double pair - current key
+
+                        else
+
+                            pairs2o3Temp = {'double pair': pairs2o3Temp['pair']}  // the past one, then double pair - the prior key
+
+                    } else {                                                      //  nope,
+
+                        pairs2o3Temp['pair'] = key                                //  .. then first pair
+
+                    }                    
+
+                } else if(pairs2o3Aux[key] == 3) {          // three
+
+                    pairs2o3Temp['three'] = key
+
+                } else if(pairs2o3Aux[key] == 4){          // poker
+
+                    pairs2o3Temp['poker'] = key
+                }
+            }  
+
+            return pairs2o3Temp        
         }
 
         
-        getHighestCard(As) {                                     // Check for the highest value - if As param 'A', check if As might be 1 in Straight play                 
+        getHighestCard(As) {                                    // Check for the highest value - if As param 'A', check if As might be 1 in Straight play                 
 
             let highestCard = ''                                 // '' Lowest value on Values dict
 
@@ -119,34 +147,48 @@ class Plays {
             return lowestCard
         }
 
-        getStraight() {
+        isStraight() {
 
             const MAX = 14
 
             let highestCard = this.getHighestCard()
             let lowestCard =  this.getLowestCard()
 
-            if(Value[highestCard] - Value[lowestCard] === 5) return true;                                // normal Straight play                
+            if(Value[highestCard] - Value[lowestCard] === 4) return {'straight':true,'value':highestCard} ;                                // normal Straight play                
 
-            else if(Value[highestCard] === MAX && Value[this.getHighestCard('A')] === 5 )   return true; // Straight play - As first Card
+            else if(Value[highestCard] === MAX && Value[this.getHighestCard('A')] === 5 )   return {'straight':true,'value':highestCard} ; // Straight play - As first Card
 
-            return false;
+            return  {'straight':false,'value':null};
+        }
+
+        isFlush() {
+
+            let suits = {}
+
+            this.handCards.forEach(card => {   
+
+                let valueSuiteArray = card.split('')
+                let cardSuit = valueSuiteArray[1];
+
+                suits.hasOwnProperty(valueSuiteArray[1])?suits[valueSuiteArray[1]]++ : suits[valueSuiteArray[1]]=1;
+            })
+
+            if (Object.keys(suits).length === 1) return {'flush':true, 'value':this.getHighestCard()}
+            else return {'flush':false, 'value':null}
         }
 
 
-
-
         getResult() {
-
-
-
         }
 }
 
 
-let plays = new Plays(['2H','4S','4C','2D','4H'])
-let plays1 = new Plays(['KH','2H','3H','4H','5H'])
+let plays = new Plays(['2H','4S','4C','4D','4H'])
+let plays1 = new Plays(['2C','3H','4H','5H','6H'])
+
 
 console.log(plays1.getHighestCard())
 console.log(plays1.getHighestCard('A'))
-console.log(plays1.getStraight())
+console.log(plays1.isStraight())
+console.log(plays1.isFlush())
+console.log(plays.getPairs2o3())
