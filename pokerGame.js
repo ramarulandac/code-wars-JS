@@ -66,53 +66,51 @@ class Plays {
             this.handCards = handCards
         }
         
-        getPairs() {             // Get the type of play: pair, double pair, three, poker, full house
+        getPairs() {             // Get the type of pair: pair simple, double pair, three, poker, full house
 
             let pairsAux = {}   // collect posible pairs & Three kind
-            let pairsTemp = {}                           
-            let pairs = {}                                 // collect the real ones pairs and Three kinds
+            let pairs = {}                           
+            
 
-            this.handCards.forEach(card => {
+            this.handCards.forEach(card => { //Classifies all cards by number
 
                 let valueSuiteArray = card.split('') 
                 let cardValue = valueSuiteArray[0]; 
                
-                pairsAux.hasOwnProperty(cardValue)? pairsAux[cardValue]++ : pairsAux[cardValue] = 1  // Having that card value ++1, otherwise.. creates the entry           
-            });
+                pairsAux.hasOwnProperty(cardValue)? pairsAux[cardValue]++ : pairsAux[cardValue] = 1  // Having that card value then ++1, otherwise.. creates the entry           
+            });        
 
-        
-
-            for(let key in pairsAux){                                       // Creates the type of pair, double pair, three, poker, full house, 
+            for(let key in pairsAux){      // Creates the type of pair: pair simple, double pair, three, poker, full house based on pairs Classification
 
                 if(pairsAux[key] == 2) {                                    //it's pair?
 
-                    if(pairsTemp['pair']) {                                 // Yes, is there been pair before?
+                    if(pairs['pair']) {                                 // Yes it is pair. is there been pair before?
 
-                        if (pairsTemp['pair'] < Value[key])                 //yup, which one is bigger?
+                        if (pairs['pair'] < Value[key])                 //yup, which one is bigger?
 
-                            pairsTemp = {'double pair' : key}               // this one, then double pair - current key
+                            pairs = {'double pair' : key}               // this one, then double pair - current key
 
                         else
 
-                            pairsTemp = {'double pair': pairsTemp['pair']}  // the past one, then double pair - the prior key
+                            pairs = {'double pair': pairs['pair']}      // the past one is bigger, then double pair - the prior key
 
-                    } else {                                                //  nope,
+                    } else {                                            //  nope, there isn't
 
-                        pairsTemp['pair'] = key                             //  .. then first pair
+                        pairs['pair'] = key                             //  .. then first pair
                     }                    
 
                 } else if(pairsAux[key] == 3) {          // three
 
-                    if (pairsTemp['pair']) pairsTemp = {'full house' : key}; // full house
-                    else pairsTemp['three'] = key
+                    if (pairs['pair']) pairs = {'full house' : key}; // full house
+                    else pairs['three'] = key
 
                 } else if(pairsAux[key] == 4){          // poker
 
-                    pairsTemp['poker'] = key
+                    pairs['poker'] = key
                 }
             }  
 
-            return pairsTemp        
+            return pairs        
         }
 
         
